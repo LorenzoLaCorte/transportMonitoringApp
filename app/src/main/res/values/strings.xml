@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">transportMonitoring</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="start_recording">Start Recording</string>
+</resources>
