@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +30,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+
+    // MQTT Related
+    private static final String BROKER_URL = "tcp://your-broker-url:1883";
+    private static final String CLIENT_ID = "your_client_id";
+    private MqttHandler mqttHandler;
+    private String[] topics = {"accelerometerX", "accelerometerY", "accelerometerZ", "noise", "positionLatitude", "positionLongitude"};
+
+    // Sensors Related
     private final int acquisitionInterval = 5000; // millis
     private Handler handler;
     private SensorManager sensorManager;
@@ -39,13 +48,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private double noiseLevel;
     private double latitude;
     private double longitude;
-
     private Button startButton;
     private Button stopButton;
     private TextView xValueTextView, yValueTextView, zValueTextView;
     private TextView xCoordinateTextView, yCoordinateTextView, noiseTextView;
     private LocationListener locationListener;
     private File recordingFile;
+    // Logging TAGs
+    private String MQTT_TAG = "MQTT" + "_" + this.getClass().getName();
 
 
     @Override
@@ -53,6 +63,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // MQTT Setup
+        mqttHandler = new MqttHandler();
+        mqttHandler.connect(BROKER_URL,CLIENT_ID);
+
+        for (String topic : topics) {
+            subscribeToTopic(topic);
+        }
+
+        // Sensors Setup
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -104,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -120,9 +138,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy() {        // Stop recording and release resources
         super.onDestroy();
-        // Stop recording and release resources
         mediaRecorder.stop();
         mediaRecorder.reset();
         mediaRecorder.release();
@@ -137,6 +154,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         handler.removeCallbacks(updateAccelerometerRunnable);
         handler.removeCallbacks(updateNoiseRunnable);
         handler.removeCallbacks(locationUpdateRunnable);
+        mqttHandler.disconnect();
+    }
+
+    private void publishMessage(String topic, String message){
+        Log.d(MQTT_TAG, "Publishing... Topic: " + topic + " - Value: " + message);
+        mqttHandler.publish(topic,message);
+    }
+    private void subscribeToTopic(String topic){
+        Log.d(MQTT_TAG, "Subscribing to topic "+ topic);
+        mqttHandler.subscribe(topic);
     }
 
     private double getNoiseLevel() {
@@ -150,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             String curTimeStr = currentTime.toString().replace(" ", "_");
             recordingFile = new File(audioDirPath + "/" + curTimeStr + ".m4a");
 
-            mediaRecorder = new MediaRecorder();
             // Setup Media Recorder
+            mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
@@ -174,19 +201,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @SuppressLint("DefaultLocale")
     private void handleDataAcquisition() {
-        // Process the accelerometer data array as per your requirements
-        // This method will be called every 10 seconds with updated accelerometer data
-
+        // Print Values
         xValueTextView.setText(String.format("%.2f", accelerometerValues[0]));
         yValueTextView.setText(String.format("%.2f", accelerometerValues[1]));
         zValueTextView.setText(String.format("%.2f", accelerometerValues[2]));
-
         noiseTextView.setText(String.format("%.2f", noiseLevel));
-
         xCoordinateTextView.setText(String.format("%.2f", latitude));
         yCoordinateTextView.setText(String.format("%.2f", longitude));
 
-        // TODO: send data over MQTT channel
+        // Send data over MQTT channel
+        publishMessage(topics[0], String.format("%.2f", accelerometerValues[0]));
+        publishMessage(topics[1], String.format("%.2f", accelerometerValues[1]));
+        publishMessage(topics[2], String.format("%.2f", accelerometerValues[2]));
+        publishMessage(topics[3], String.format("%.2f", noiseLevel));
+        publishMessage(topics[4], String.format("%.2f", latitude));
+        publishMessage(topics[5], String.format("%.2f", longitude));
     }
 
     @Override
