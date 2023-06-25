@@ -5,6 +5,7 @@ import android.Manifest;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 
@@ -24,12 +25,22 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    // TODO: refactor everything: put any logic within its class
 
     // MQTT Related
     private static final String BROKER_URL = "tcp://your-broker-url:1883";
@@ -38,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private String[] topics = {"accelerometerX", "accelerometerY", "accelerometerZ", "noise", "positionLatitude", "positionLongitude"};
 
     // Sensors Related
-    private final int acquisitionInterval = 5000; // millis
+    private final int acquisitionInterval = 1000; // millis
     private Handler handler;
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -112,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.MODIFY_AUDIO_SETTINGS,
-
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                 },
                 1);
 
@@ -121,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+        startRecording();
     }
 
     @Override
@@ -166,37 +178,52 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mqttHandler.subscribe(topic);
     }
 
-    private double getNoiseLevel() {
+    void startRecording() {
+        File audioDir = new File(this.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "AudioMemos");
+        audioDir.mkdirs();
+        String audioDirPath = audioDir.getAbsolutePath();
+        Date currentTime = Calendar.getInstance().getTime(); // current time
+        String curTimeStr = currentTime.toString().replace(" ", "_");
+        recordingFile = new File(audioDirPath + "/" + curTimeStr + ".m4a");
+
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(recordingFile);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
         try {
-            String state = Environment.getExternalStorageState();
-            Context ctx = this.getApplicationContext();
-            File audioDir = new File(ctx.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "AudioMemos");
-            audioDir.mkdirs();
-            String audioDirPath = audioDir.getAbsolutePath();
-            Date currentTime = Calendar.getInstance().getTime(); // current time
-            String curTimeStr = currentTime.toString().replace(" ", "_");
-            recordingFile = new File(audioDirPath + "/" + curTimeStr + ".m4a");
-
-            // Setup Media Recorder
-            mediaRecorder = new MediaRecorder();
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-            mediaRecorder.setOutputFile(recordingFile.getAbsolutePath());
-
-            // Prepare and start the MediaRecorder
             mediaRecorder.prepare();
-            mediaRecorder.start();
-
-            // Calculate the average amplitude over a short duration to estimate noise level
-            int amplitude = mediaRecorder.getMaxAmplitude();
-            double noiseLevel = 20 * Math.log10(amplitude / 32767.0);
-
-            return noiseLevel;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Media Recorder", "prepare() failed");
         }
-        return 0.0;
+        mediaRecorder.start();
+        double audioLevel = mediaRecorder.getMaxAmplitude();
+        Log.d("Media Recorder", "Registered Audio Level" + audioLevel);
+    }
+    private double getNoiseLevel() {
+        int amplitude = mediaRecorder.getMaxAmplitude();
+        double noiseLevel = 20 * Math.log10(amplitude);
+        return noiseLevel;
+    }
+
+    private void writeToLogFile(JSONObject data) {
+        String fileName = "data_log.json"; // Name of the log file
+
+        File externalDir = getExternalFilesDir(null);
+        if (externalDir != null) {
+            File file = new File(externalDir, fileName);
+
+            try {
+                FileWriter fileWriter = new FileWriter(file, true); // "true" for appending data
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(data.toString());
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -216,6 +243,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         publishMessage(topics[3], String.format("%.2f", noiseLevel));
         publishMessage(topics[4], String.format("%.2f", latitude));
         publishMessage(topics[5], String.format("%.2f", longitude));
+
+        // Construct JSON object
+        JSONObject jsonData = new JSONObject();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateTime = sdf.format(new Date());
+        try {
+            jsonData.put("dateTime", currentDateTime);
+            jsonData.put("xValue", String.format("%.2f", accelerometerValues[0]));
+            jsonData.put("xValue", String.format("%.2f", accelerometerValues[0]));
+            jsonData.put("yValue", String.format("%.2f", accelerometerValues[1]));
+            jsonData.put("zValue", String.format("%.2f", accelerometerValues[2]));
+            jsonData.put("noise", String.format("%.2f", noiseLevel));
+            jsonData.put("xCoordinate", String.format("%.2f", latitude));
+            jsonData.put("yCoordinate", String.format("%.2f", longitude));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Write data to file
+        writeToLogFile(jsonData);
     }
 
     @Override
