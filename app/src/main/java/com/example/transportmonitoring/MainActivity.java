@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 
@@ -25,7 +23,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,13 +40,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // TODO: refactor everything: put any logic within its class
 
     // MQTT Related
-    private static final String BROKER_URL = "tcp://your-broker-url:1883";
-    private static final String CLIENT_ID = "your_client_id";
+    private static final String BROKER_URL = "tcp://192.168.112.1:1883"; // ipaddr to get the ip
+    private static final String CLIENT_ID = "mqtt_1";
     private MqttHandler mqttHandler;
-    private String[] topics = {"accelerometerX", "accelerometerY", "accelerometerZ", "noise", "positionLatitude", "positionLongitude"};
+    private String[] topics = {"/tm/accelerometerX", "/tm/accelerometerY", "/tm/accelerometerZ", "/tm/noise", "/tm/positionLatitude", "/tm/positionLongitude"};
 
     // Sensors Related
-    private final int acquisitionInterval = 1000; // millis
+    private final int acquisitionInterval = 10000; // millis
     private Handler handler;
     private SensorManager sensorManager;
     private Sensor accelerometer;
