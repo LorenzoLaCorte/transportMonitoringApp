@@ -1,0 +1,203 @@
+[
+    {
+        "id": "d9d2d71b4206e377",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b392c487ce7d94a7",
+        "type": "debug",
+        "z": "d9d2d71b4206e377",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "d3335f1e1d74c41c",
+        "type": "aedes broker",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "65275a9ecc1be235",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/accelerometerX",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 390,
+        "y": 460,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "f55f831473c8ad52",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/accelerometerY",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 390,
+        "y": 540,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "9a9f5858dff9f1b2",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/accelerometerZ",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 390,
+        "y": 600,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "5f497606f3dc179b",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/noise",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 360,
+        "y": 660,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "3554aa8bd955decd",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/positionLatitude",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 390,
+        "y": 720,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "5e4d95e17140b840",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/positionLongitude",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 400,
+        "y": 780,
+        "wires": [
+            [
+                "b392c487ce7d94a7"
+            ]
+        ]
+    },
+    {
+        "id": "64ce07a9bb65dd84",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
