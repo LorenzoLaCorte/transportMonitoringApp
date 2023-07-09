@@ -20,8 +20,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
-        "y": 460,
+        "x": 880,
+        "y": 640,
         "wires": []
     },
     {
@@ -41,7 +41,7 @@
         "dburl": "",
         "usetls": false,
         "x": 390,
-        "y": 360,
+        "y": 260,
         "wires": [
             [],
             []
@@ -82,7 +82,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 390,
-        "y": 540,
+        "y": 520,
         "wires": [
             [
                 "b392c487ce7d94a7"
@@ -174,6 +174,98 @@
         ]
     },
     {
+        "id": "239e17654ae2d85b",
+        "type": "mqtt out",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/noise",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4f37a752243907b9",
+        "x": 380,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4449d5aca3df6736",
+        "type": "inject",
+        "z": "d9d2d71b4206e377",
+        "name": "attempt 1",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 390,
+        "y": 380,
+        "wires": [
+            [
+                "bb4a9ec7755dc912"
+            ]
+        ]
+    },
+    {
+        "id": "09bfacea924ee22d",
+        "type": "REST Thing",
+        "z": "d9d2d71b4206e377",
+        "name": "Prova1",
+        "url": "http://212.78.1.205:8080",
+        "thingname": "Attempt1",
+        "credentials": {},
+        "x": 1180,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c808ae7606286881",
+        "type": "debug",
+        "z": "d9d2d71b4206e377",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "bb4a9ec7755dc912",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "function 1",
+        "func": "var tempF = Math.random() * 40 + 60;\n\nvar tempC = (tempF - 32) / 1.8;\n\nvar humidity = Math.random() * 80 + 20;\n\nmsg.payload = {\n    \"accelerometerX\": tempF,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 380,
+        "wires": [
+            [
+                "09bfacea924ee22d",
+                "c808ae7606286881"
+            ]
+        ]
+    },
+    {
         "id": "64ce07a9bb65dd84",
         "type": "mqtt-broker",
         "name": "",
@@ -188,6 +280,33 @@
         "birthTopic": "",
         "birthQos": "0",
         "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "4f37a752243907b9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt://212.78.1.205",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "/tm/noise",
+        "birthQos": "0",
+        "birthPayload": "22",
         "birthMsg": {},
         "closeTopic": "",
         "closeQos": "0",
