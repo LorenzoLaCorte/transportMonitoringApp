@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final String BROKER_URL = "tcp://192.168.120.98:1883"; // ipaddr to get the ip
     private static final String CLIENT_ID = "mqtt_1";
     private MqttHandler mqttHandler;
-    private String[] topics = {"/tm/accelerometerX", "/tm/accelerometerY", "/tm/accelerometerZ", "/tm/noise", "/tm/positionLatitude", "/tm/positionLongitude"};
+    private String[] topics = {"/tm/accelerometer", "/tm/noise", "/tm/positionLatitude", "/tm/positionLongitude"};
 
     // Sensors Related
     private final int acquisitionInterval = 10000; // millis
@@ -235,12 +235,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         yCoordinateTextView.setText(String.format("%.2f", longitude));
 
         // Send data over MQTT channel
-        publishMessage(topics[0], String.format("%.2f", accelerometerValues[0]));
-        publishMessage(topics[1], String.format("%.2f", accelerometerValues[1]));
-        publishMessage(topics[2], String.format("%.2f", accelerometerValues[2]));
-        publishMessage(topics[3], String.format("%.2f", noiseLevel));
-        publishMessage(topics[4], String.format("%.2f", latitude));
-        publishMessage(topics[5], String.format("%.2f", longitude));
+
+
+        JSONObject accelerometer = new JSONObject();
+        try {
+            accelerometer.put("accelerometerX", String.format("%.2f", accelerometerValues[0]));
+            accelerometer.put("accelerometerY", String.format("%.2f", accelerometerValues[1]));
+            accelerometer.put("accelerometerZ", String.format("%.2f", accelerometerValues[2]));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        publishMessage(topics[0], accelerometer.toString());
+
+        publishMessage(topics[1], String.format("%.2f", noiseLevel));
+        publishMessage(topics[2], String.format("%.2f", latitude));
+        publishMessage(topics[3], String.format("%.2f", longitude));
 
         // Construct JSON object
         JSONObject jsonData = new JSONObject();

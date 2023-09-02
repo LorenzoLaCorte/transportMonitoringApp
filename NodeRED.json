@@ -8,23 +8,6 @@
         "env": []
     },
     {
-        "id": "b392c487ce7d94a7",
-        "type": "debug",
-        "z": "d9d2d71b4206e377",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1400,
-        "y": 1060,
-        "wires": []
-    },
-    {
         "id": "d3335f1e1d74c41c",
         "type": "aedes broker",
         "z": "d9d2d71b4206e377",
@@ -40,77 +23,11 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 1110,
-        "y": 1180,
+        "x": 690,
+        "y": 780,
         "wires": [
             [],
             []
-        ]
-    },
-    {
-        "id": "65275a9ecc1be235",
-        "type": "mqtt in",
-        "z": "d9d2d71b4206e377",
-        "name": "",
-        "topic": "/tm/accelerometerX",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "64ce07a9bb65dd84",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 770,
-        "y": 780,
-        "wires": [
-            [
-                "b392c487ce7d94a7",
-                "cda6995578fb3864"
-            ]
-        ]
-    },
-    {
-        "id": "f55f831473c8ad52",
-        "type": "mqtt in",
-        "z": "d9d2d71b4206e377",
-        "name": "",
-        "topic": "/tm/accelerometerY",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "64ce07a9bb65dd84",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 770,
-        "y": 840,
-        "wires": [
-            [
-                "b392c487ce7d94a7",
-                "cda6995578fb3864"
-            ]
-        ]
-    },
-    {
-        "id": "9a9f5858dff9f1b2",
-        "type": "mqtt in",
-        "z": "d9d2d71b4206e377",
-        "name": "",
-        "topic": "/tm/accelerometerZ",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "64ce07a9bb65dd84",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 770,
-        "y": 920,
-        "wires": [
-            [
-                "b392c487ce7d94a7",
-                "cda6995578fb3864"
-            ]
         ]
     },
     {
@@ -130,7 +47,6 @@
         "y": 980,
         "wires": [
             [
-                "b392c487ce7d94a7",
                 "cda6995578fb3864"
             ]
         ]
@@ -152,7 +68,6 @@
         "y": 1040,
         "wires": [
             [
-                "b392c487ce7d94a7",
                 "cda6995578fb3864"
             ]
         ]
@@ -174,7 +89,6 @@
         "y": 1100,
         "wires": [
             [
-                "b392c487ce7d94a7",
                 "cda6995578fb3864"
             ]
         ]
@@ -196,8 +110,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 400,
-        "y": 740,
+        "x": 540,
+        "y": 880,
         "wires": [
             [
                 "ab93c3fc3694f5b5"
@@ -211,25 +125,8 @@
         "name": "DataSender",
         "url": "http://212.78.1.205:8080",
         "thingname": "DataReceiver",
-        "x": 1630,
-        "y": 920,
-        "wires": []
-    },
-    {
-        "id": "c808ae7606286881",
-        "type": "debug",
-        "z": "d9d2d71b4206e377",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1600,
-        "y": 660,
+        "x": 1350,
+        "y": 860,
         "wires": []
     },
     {
@@ -243,8 +140,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
-        "y": 380,
+        "x": 500,
+        "y": 780,
         "wires": [
             []
         ]
@@ -260,30 +157,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1400,
-        "y": 920,
+        "x": 1120,
+        "y": 980,
         "wires": [
             [
-                "c808ae7606286881",
                 "09bfacea924ee22d"
             ]
         ]
-    },
-    {
-        "id": "b1b77a60335f45ab",
-        "type": "debug",
-        "z": "d9d2d71b4206e377",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1600,
-        "y": 620,
-        "wires": []
     },
     {
         "id": "ab93c3fc3694f5b5",
@@ -297,10 +177,9 @@
         "finalize": "",
         "libs": [],
         "x": 760,
-        "y": 740,
+        "y": 880,
         "wires": [
             [
-                "b1b77a60335f45ab",
                 "09bfacea924ee22d"
             ]
         ]
@@ -317,11 +196,10 @@
         "finalize": "",
         "libs": [],
         "x": 750,
-        "y": 700,
+        "y": 840,
         "wires": [
             [
-                "09bfacea924ee22d",
-                "b1b77a60335f45ab"
+                "09bfacea924ee22d"
             ]
         ]
     },
@@ -342,8 +220,8 @@
         "once": true,
         "onceDelay": "0.2",
         "topic": "",
-        "x": 400,
-        "y": 700,
+        "x": 540,
+        "y": 840,
         "wires": [
             [
                 "9eabd8a6286190e9"
@@ -351,44 +229,42 @@
         ]
     },
     {
-        "id": "2ce9a59394856684",
+        "id": "7d3e72792ece62a2",
+        "type": "mqtt in",
+        "z": "d9d2d71b4206e377",
+        "name": "",
+        "topic": "/tm/accelerometer",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "64ce07a9bb65dd84",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 770,
+        "y": 920,
+        "wires": [
+            [
+                "db91a965c4bfbfbb"
+            ]
+        ]
+    },
+    {
+        "id": "db91a965c4bfbfbb",
         "type": "function",
         "z": "d9d2d71b4206e377",
         "name": "function 3",
-        "func": "var crowdHighestNumber = 26\nvar crowdLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\n\nmsg.payload = {\n    \"accelerometerX\": 10,\n    \"accelerometerZ\": 11,\n    \"accelerometerY\": 12,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/accelerometer\"\nreturn msg;",
+        "func": "function convertStringsToFloats(obj) {\n    for (const [key, value] of Object.entries(obj)) {\n        const floatValue = parseFloat(value.replaceAll(\",\", \".\"));\n        obj[key] = floatValue;\n    }\n    return obj;\n}\n\nmsg.payload = convertStringsToFloats(msg.payload);\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
-        "y": 1280,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "3fcdc654626316df",
-        "type": "inject",
-        "z": "d9d2d71b4206e377",
-        "name": "timestamp 2",
-        "props": [
-            {
-                "p": "time",
-                "v": "",
-                "vt": "date"
-            }
-        ],
-        "repeat": "3",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 400,
-        "y": 1280,
+        "x": 1120,
+        "y": 920,
         "wires": [
             [
-                "2ce9a59394856684"
+                "09bfacea924ee22d"
             ]
         ]
     },
