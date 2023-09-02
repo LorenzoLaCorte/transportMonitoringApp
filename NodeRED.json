@@ -20,8 +20,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1440,
-        "y": 1100,
+        "x": 1400,
+        "y": 1060,
         "wires": []
     },
     {
@@ -40,8 +40,8 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 370,
-        "y": 860,
+        "x": 1110,
+        "y": 1180,
         "wires": [
             [],
             []
@@ -65,8 +65,7 @@
         "wires": [
             [
                 "b392c487ce7d94a7",
-                "cda6995578fb3864",
-                "b1b77a60335f45ab"
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -181,31 +180,15 @@
         ]
     },
     {
-        "id": "239e17654ae2d85b",
-        "type": "mqtt out",
-        "z": "d9d2d71b4206e377",
-        "name": "",
-        "topic": "/tm/noise",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "4f37a752243907b9",
-        "x": 380,
-        "y": 220,
-        "wires": []
-    },
-    {
         "id": "4449d5aca3df6736",
         "type": "inject",
         "z": "d9d2d71b4206e377",
-        "name": "attempt 1",
+        "name": "timestamp 2",
         "props": [
             {
-                "p": "payload"
+                "p": "time",
+                "v": "",
+                "vt": "date"
             }
         ],
         "repeat": "3",
@@ -213,13 +196,11 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 390,
-        "y": 380,
+        "x": 400,
+        "y": 740,
         "wires": [
             [
-                "bb4a9ec7755dc912"
+                "ab93c3fc3694f5b5"
             ]
         ]
     },
@@ -230,8 +211,8 @@
         "name": "DataSender",
         "url": "http://212.78.1.205:8080",
         "thingname": "DataReceiver",
-        "x": 1370,
-        "y": 780,
+        "x": 1630,
+        "y": 920,
         "wires": []
     },
     {
@@ -247,8 +228,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1220,
-        "y": 260,
+        "x": 1600,
+        "y": 660,
         "wires": []
     },
     {
@@ -262,7 +243,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
+        "x": 300,
         "y": 380,
         "wires": [
             []
@@ -279,7 +260,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1460,
+        "x": 1400,
         "y": 920,
         "wires": [
             [
@@ -300,8 +281,153 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1040,
-        "y": 560,
+        "x": 1600,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "ab93c3fc3694f5b5",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "/tm/temperature",
+        "func": "var tempHighestNumber = 26\nvar tempLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\nvar temp = Math.random() * (tempHighestNumber - tempLowestNumber) + tempLowestNumber;\n\nmsg.payload = {\n    \"temperature\": temp,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/temperature\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 740,
+        "wires": [
+            [
+                "b1b77a60335f45ab",
+                "09bfacea924ee22d"
+            ]
+        ]
+    },
+    {
+        "id": "9eabd8a6286190e9",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "/tm/crowding",
+        "func": "var crowdHighestNumber = 26\nvar crowdLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\nvar crowd = Math.random() * (crowdHighestNumber - crowdLowestNumber) + crowdLowestNumber;\n\nmsg.payload = {\n    \"crowding\": crowd,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/crowding\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 700,
+        "wires": [
+            [
+                "09bfacea924ee22d",
+                "b1b77a60335f45ab"
+            ]
+        ]
+    },
+    {
+        "id": "e325b7e79dc86e6e",
+        "type": "inject",
+        "z": "d9d2d71b4206e377",
+        "name": "timestamp 1",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.2",
+        "topic": "",
+        "x": 400,
+        "y": 700,
+        "wires": [
+            [
+                "9eabd8a6286190e9"
+            ]
+        ]
+    },
+    {
+        "id": "2ce9a59394856684",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "/tm/accelerometer-test",
+        "func": "var crowdHighestNumber = 26\nvar crowdLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\n\nmsg.payload = {\n    \"accelerometerX\": 10,\n    \"accelerometerZ\": 11,\n    \"accelerometerY\": 12,\n    \"accelerometer timestamp\": msg.time,\n};\nmsg.topic = \"/tm/accelerometer\"\n\nmsg.payload = JSON.stringify(msg.payload)\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1280,
+        "wires": [
+            [
+                "404153c61f25abfe"
+            ]
+        ]
+    },
+    {
+        "id": "3fcdc654626316df",
+        "type": "inject",
+        "z": "d9d2d71b4206e377",
+        "name": "timestamp 2",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 400,
+        "y": 1280,
+        "wires": [
+            [
+                "2ce9a59394856684"
+            ]
+        ]
+    },
+    {
+        "id": "404153c61f25abfe",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "json parse",
+        "func": "msg.payload = JSON.parse(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 1280,
+        "wires": [
+            [
+                "92d97bd0dcad37da",
+                "09bfacea924ee22d"
+            ]
+        ]
+    },
+    {
+        "id": "92d97bd0dcad37da",
+        "type": "debug",
+        "z": "d9d2d71b4206e377",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 1400,
         "wires": []
     },
     {
@@ -319,33 +445,6 @@
         "birthTopic": "",
         "birthQos": "0",
         "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "userProps": "",
-        "sessionExpiry": ""
-    },
-    {
-        "id": "4f37a752243907b9",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "mqtt://212.78.1.205",
-        "port": "1883",
-        "clientid": "",
-        "autoConnect": true,
-        "usetls": false,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "/tm/noise",
-        "birthQos": "0",
-        "birthPayload": "22",
         "birthMsg": {},
         "closeTopic": "",
         "closeQos": "0",
