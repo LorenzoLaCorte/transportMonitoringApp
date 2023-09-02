@@ -20,8 +20,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
-        "y": 640,
+        "x": 1400,
+        "y": 1060,
         "wires": []
     },
     {
@@ -40,8 +40,8 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 390,
-        "y": 260,
+        "x": 1110,
+        "y": 1180,
         "wires": [
             [],
             []
@@ -60,11 +60,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 460,
+        "x": 770,
+        "y": 780,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -81,11 +82,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 520,
+        "x": 770,
+        "y": 840,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -102,11 +104,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 600,
+        "x": 770,
+        "y": 920,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -123,11 +126,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 360,
-        "y": 660,
+        "x": 740,
+        "y": 980,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -144,11 +148,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 720,
+        "x": 770,
+        "y": 1040,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -165,40 +170,25 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 400,
-        "y": 780,
+        "x": 780,
+        "y": 1100,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
-    },
-    {
-        "id": "239e17654ae2d85b",
-        "type": "mqtt out",
-        "z": "d9d2d71b4206e377",
-        "name": "",
-        "topic": "/tm/noise",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "4f37a752243907b9",
-        "x": 380,
-        "y": 220,
-        "wires": []
     },
     {
         "id": "4449d5aca3df6736",
         "type": "inject",
         "z": "d9d2d71b4206e377",
-        "name": "attempt 1",
+        "name": "timestamp 2",
         "props": [
             {
-                "p": "payload"
+                "p": "time",
+                "v": "",
+                "vt": "date"
             }
         ],
         "repeat": "3",
@@ -206,13 +196,11 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 390,
-        "y": 380,
+        "x": 400,
+        "y": 740,
         "wires": [
             [
-                "bb4a9ec7755dc912"
+                "ab93c3fc3694f5b5"
             ]
         ]
     },
@@ -220,12 +208,11 @@
         "id": "09bfacea924ee22d",
         "type": "REST Thing",
         "z": "d9d2d71b4206e377",
-        "name": "Prova1",
+        "name": "DataSender",
         "url": "http://212.78.1.205:8080",
-        "thingname": "Attempt1",
-        "credentials": {},
-        "x": 1180,
-        "y": 380,
+        "thingname": "DataReceiver",
+        "x": 1630,
+        "y": 920,
         "wires": []
     },
     {
@@ -241,8 +228,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
-        "y": 220,
+        "x": 1600,
+        "y": 660,
         "wires": []
     },
     {
@@ -250,18 +237,158 @@
         "type": "function",
         "z": "d9d2d71b4206e377",
         "name": "function 1",
-        "func": "var tempF = Math.random() * 40 + 60;\n\nvar tempC = (tempF - 32) / 1.8;\n\nvar humidity = Math.random() * 80 + 20;\n\nmsg.payload = {\n    \"accelerometerX\": tempF,\n};\n\nreturn msg;",
+        "func": "var accHighestNumber = 10\nvar accLowestNumber = -10\nvar accX = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar accY = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar accZ = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar noiseHighestNumber = 70\nvar noiseLowestNumber = 20\nvar noise = 71;\nvar latHighestNumber = 70\nvar latLowestNumber = 37\nvar lonHighestNumber = 11\nvar lonLowestNumber = 8\nvar lat = Math.random() * (latHighestNumber - latLowestNumber) + latLowestNumber;\nvar lon = Math.random() * (lonHighestNumber - lonLowestNumber) + lonLowestNumber;\n\nmsg.payload = {\n    \"accelerometerX\": accX,\n    \"accelerometerY\": accY,\n    \"accelerometerZ\": accZ,\n    \"noise\": noise,\n    \"latitude\": lat,\n    \"longitude\": lon\n};\n\nreturn msg;\n\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
+        "x": 300,
         "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cda6995578fb3864",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "function 2",
+        "func": "var variableName = msg.topic.split(\"/\").pop();\nvar variableValue = parseFloat(msg.payload.replaceAll(\",\", \".\"));\n\nvar payloadObj = {}; // Create an empty object\n\n// Use square brackets to set the property name based on variableName\npayloadObj[variableName] = variableValue;\n\nmsg.payload = payloadObj;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1400,
+        "y": 920,
+        "wires": [
+            [
+                "c808ae7606286881",
+                "09bfacea924ee22d"
+            ]
+        ]
+    },
+    {
+        "id": "b1b77a60335f45ab",
+        "type": "debug",
+        "z": "d9d2d71b4206e377",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "ab93c3fc3694f5b5",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "/tm/temperature",
+        "func": "var tempHighestNumber = 26\nvar tempLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\nvar temp = Math.random() * (tempHighestNumber - tempLowestNumber) + tempLowestNumber;\n\nmsg.payload = {\n    \"temperature\": temp,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/temperature\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 740,
+        "wires": [
+            [
+                "b1b77a60335f45ab",
+                "09bfacea924ee22d"
+            ]
+        ]
+    },
+    {
+        "id": "9eabd8a6286190e9",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "/tm/crowding",
+        "func": "var crowdHighestNumber = 26\nvar crowdLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\nvar crowd = Math.random() * (crowdHighestNumber - crowdLowestNumber) + crowdLowestNumber;\n\nmsg.payload = {\n    \"crowding\": crowd,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/crowding\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 700,
         "wires": [
             [
                 "09bfacea924ee22d",
-                "c808ae7606286881"
+                "b1b77a60335f45ab"
+            ]
+        ]
+    },
+    {
+        "id": "e325b7e79dc86e6e",
+        "type": "inject",
+        "z": "d9d2d71b4206e377",
+        "name": "timestamp 1",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.2",
+        "topic": "",
+        "x": 400,
+        "y": 700,
+        "wires": [
+            [
+                "9eabd8a6286190e9"
+            ]
+        ]
+    },
+    {
+        "id": "2ce9a59394856684",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "function 3",
+        "func": "var crowdHighestNumber = 26\nvar crowdLowestNumber = 25\n\n//const currentDate = new Date();\n//const time = currentDate.getTime();\n\n\nmsg.payload = {\n    \"accelerometerX\": 10,\n    \"accelerometerZ\": 11,\n    \"accelerometerY\": 12,\n    \"timestamp\": msg.time,\n};\nmsg.topic = \"/tm/accelerometer\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 1280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3fcdc654626316df",
+        "type": "inject",
+        "z": "d9d2d71b4206e377",
+        "name": "timestamp 2",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 400,
+        "y": 1280,
+        "wires": [
+            [
+                "2ce9a59394856684"
             ]
         ]
     },
@@ -280,33 +407,6 @@
         "birthTopic": "",
         "birthQos": "0",
         "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "userProps": "",
-        "sessionExpiry": ""
-    },
-    {
-        "id": "4f37a752243907b9",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "mqtt://212.78.1.205",
-        "port": "1883",
-        "clientid": "",
-        "autoConnect": true,
-        "usetls": false,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "/tm/noise",
-        "birthQos": "0",
-        "birthPayload": "22",
         "birthMsg": {},
         "closeTopic": "",
         "closeQos": "0",

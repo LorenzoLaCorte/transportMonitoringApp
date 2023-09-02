@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // TODO: refactor everything: put any logic within its class
 
     // MQTT Related
-    private static final String BROKER_URL = "tcp://192.168.1.120:1883"; // ipaddr to get the ip
+    private static final String BROKER_URL = "tcp://192.168.120.98:1883"; // ipaddr to get the ip
     private static final String CLIENT_ID = "mqtt_1";
     private MqttHandler mqttHandler;
     private String[] topics = {"/tm/accelerometerX", "/tm/accelerometerY", "/tm/accelerometerZ", "/tm/noise", "/tm/positionLatitude", "/tm/positionLongitude"};
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         ActivityCompat.requestPermissions(this,
                 new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.MODIFY_AUDIO_SETTINGS,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
