@@ -20,8 +20,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
-        "y": 640,
+        "x": 1440,
+        "y": 1100,
         "wires": []
     },
     {
@@ -40,8 +40,8 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 390,
-        "y": 260,
+        "x": 370,
+        "y": 860,
         "wires": [
             [],
             []
@@ -60,11 +60,13 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 460,
+        "x": 770,
+        "y": 780,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864",
+                "b1b77a60335f45ab"
             ]
         ]
     },
@@ -81,11 +83,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 520,
+        "x": 770,
+        "y": 840,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -102,11 +105,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 600,
+        "x": 770,
+        "y": 920,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -123,11 +127,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 360,
-        "y": 660,
+        "x": 740,
+        "y": 980,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -144,11 +149,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 390,
-        "y": 720,
+        "x": 770,
+        "y": 1040,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -165,11 +171,12 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 400,
-        "y": 780,
+        "x": 780,
+        "y": 1100,
         "wires": [
             [
-                "b392c487ce7d94a7"
+                "b392c487ce7d94a7",
+                "cda6995578fb3864"
             ]
         ]
     },
@@ -220,12 +227,11 @@
         "id": "09bfacea924ee22d",
         "type": "REST Thing",
         "z": "d9d2d71b4206e377",
-        "name": "Prova1",
+        "name": "DataSender",
         "url": "http://212.78.1.205:8080",
-        "thingname": "Attempt1",
-        "credentials": {},
-        "x": 1180,
-        "y": 380,
+        "thingname": "DataReceiver",
+        "x": 1370,
+        "y": 780,
         "wires": []
     },
     {
@@ -241,8 +247,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
-        "y": 220,
+        "x": 1220,
+        "y": 260,
         "wires": []
     },
     {
@@ -250,7 +256,7 @@
         "type": "function",
         "z": "d9d2d71b4206e377",
         "name": "function 1",
-        "func": "var tempF = Math.random() * 40 + 60;\n\nvar tempC = (tempF - 32) / 1.8;\n\nvar humidity = Math.random() * 80 + 20;\n\nmsg.payload = {\n    \"accelerometerX\": tempF,\n};\n\nreturn msg;",
+        "func": "var accHighestNumber = 10\nvar accLowestNumber = -10\nvar accX = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar accY = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar accZ = Math.random() * (accHighestNumber - accLowestNumber) + accLowestNumber;\nvar noiseHighestNumber = 70\nvar noiseLowestNumber = 20\nvar noise = 71;\nvar latHighestNumber = 70\nvar latLowestNumber = 37\nvar lonHighestNumber = 11\nvar lonLowestNumber = 8\nvar lat = Math.random() * (latHighestNumber - latLowestNumber) + latLowestNumber;\nvar lon = Math.random() * (lonHighestNumber - lonLowestNumber) + lonLowestNumber;\n\nmsg.payload = {\n    \"accelerometerX\": accX,\n    \"accelerometerY\": accY,\n    \"accelerometerZ\": accZ,\n    \"noise\": noise,\n    \"latitude\": lat,\n    \"longitude\": lon\n};\n\nreturn msg;\n\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -259,11 +265,44 @@
         "x": 800,
         "y": 380,
         "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cda6995578fb3864",
+        "type": "function",
+        "z": "d9d2d71b4206e377",
+        "name": "function 2",
+        "func": "var variableName = msg.topic.split(\"/\").pop();\nvar variableValue = parseFloat(msg.payload.replaceAll(\",\", \".\"));\n\nvar payloadObj = {}; // Create an empty object\n\n// Use square brackets to set the property name based on variableName\npayloadObj[variableName] = variableValue;\n\nmsg.payload = payloadObj;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1460,
+        "y": 920,
+        "wires": [
             [
-                "09bfacea924ee22d",
-                "c808ae7606286881"
+                "c808ae7606286881",
+                "09bfacea924ee22d"
             ]
         ]
+    },
+    {
+        "id": "b1b77a60335f45ab",
+        "type": "debug",
+        "z": "d9d2d71b4206e377",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 560,
+        "wires": []
     },
     {
         "id": "64ce07a9bb65dd84",
