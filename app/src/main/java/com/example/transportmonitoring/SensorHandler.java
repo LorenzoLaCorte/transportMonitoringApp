@@ -34,11 +34,12 @@ public class SensorHandler implements SensorEventListener {
     private final LocationManager locationManager;
     private final LocationListener locationListener;
     private MediaRecorder mediaRecorder;
+    private float[] accelerometerValues;
 
     private final Runnable updateSensorDataRunnable = new Runnable() {
         @Override
         public void run() {
-            //handleDataAcquisition();
+            sensorListener.onAccelerometerUpdate(accelerometerValues);
             handler.postDelayed(this, 10000); // Adjust the interval as needed
         }
     };
@@ -139,7 +140,7 @@ public class SensorHandler implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            sensorListener.onAccelerometerUpdate(event.values);
+            accelerometerValues = event.values;
         }
     }
     @Override
