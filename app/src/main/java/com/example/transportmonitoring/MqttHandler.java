@@ -1,8 +1,8 @@
 package com.example.transportmonitoring;
+
 import android.util.Log;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -11,15 +11,25 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class MqttHandler implements MqttCallback {
+    private static final String MQTT_TAG = "MQTT_HANDLER";
     private MqttAsyncClient client;
+    private static final String BROKER_URL = "tcp://192.168.120.98:1883"; // ipaddr to get the ip
+    private static final String CLIENT_ID = "mqtt_1";
 
-    public void connect(String brokerUrl, String clientId) {
+    public MqttHandler(String... topics){
+        this.connect();
+        for(String t: topics) {
+            Log.d(MQTT_TAG, "Subscribing to topic " + t);
+            subscribe(t);
+        }
+    }
+    public void connect() {
         try {
             // Set up the persistence layer
             MemoryPersistence persistence = new MemoryPersistence();
 
             // Initialize the MQTT client
-            client = new MqttAsyncClient(brokerUrl, clientId, persistence);
+            client = new MqttAsyncClient(BROKER_URL, CLIENT_ID, persistence);
 
             // Set up the connection options
             MqttConnectOptions connectOptions = new MqttConnectOptions();
@@ -32,6 +42,9 @@ public class MqttHandler implements MqttCallback {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+    private void subscribeToTopic(String topic){
+        this.subscribe(topic);
     }
 
     public void disconnect() {
@@ -61,11 +74,11 @@ public class MqttHandler implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        Log.d("MQTT", "connectionLost");
+        Log.d(MQTT_TAG, "connectionLost");
     }
 
     @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
+    public void messageArrived(String topic, MqttMessage message){
         Log.d("MQTT", "messageArrived");
     }
 
