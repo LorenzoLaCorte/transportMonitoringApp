@@ -35,6 +35,7 @@ public class SensorHandler implements SensorEventListener {
     private final LocationListener locationListener;
     private MediaRecorder mediaRecorder;
     private float[] accelerometerValues;
+    private Location location;
 
     private final Runnable updateSensorDataRunnable = new Runnable() {
         @Override
@@ -53,7 +54,7 @@ public class SensorHandler implements SensorEventListener {
     private final Runnable updateLocationRunnable = new Runnable() {
         @Override
         public void run() {
-            //handleDataAcquisition();
+            sensorListener.onLocationUpdate(location);
             handler.postDelayed(this, 10000); // Adjust the interval as needed
         }
     };
@@ -68,8 +69,8 @@ public class SensorHandler implements SensorEventListener {
         locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
-            public void onLocationChanged(Location location) {
-                sensorListener.onLocationUpdate(location);
+            public void onLocationChanged(Location l) {
+                location = l;
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {}
