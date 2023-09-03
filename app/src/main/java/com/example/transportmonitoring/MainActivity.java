@@ -16,9 +16,7 @@ import androidx.core.app.ActivityCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.Instant;
 
 public class MainActivity extends AppCompatActivity implements SensorHandler.SensorListener {
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -27,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
     private boolean recording = false;
     private SensorHandler sensorHandler;
     private MqttHandler mqttHandler;
-    private final String[] topics = {"/tm/accelerometer", "/tm/noise", "/tm/positionLatitude", "/tm/positionLongitude"};
+    private final String[] topics = {"/tm/accelerometer", "/tm/noise", "/tm/position"};
 
     private Button startButton;
     private Button stopButton;
@@ -151,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         zValueTextView.setText(xValue);
         JSONObject accelerometerObject = new JSONObject();
         try {
-            accelerometerObject.put("dateTime", getTimestamp());
+            accelerometerObject.put("accelerometerTS", getTimestamp());
             accelerometerObject.put("accelerometerX", xValue);
             accelerometerObject.put("accelerometerY", yValue);
             accelerometerObject.put("accelerometerZ", zValue);
@@ -176,14 +174,14 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
 
         try {
             //TODO: verificare nomi parametri
-            locationObject.put("dateTime", getTimestamp());
-            locationObject.put("xValue", latitude);
-            locationObject.put("yValue", longitude);
+            locationObject.put("positionTS", getTimestamp());
+            locationObject.put("latitude", latitude);
+            locationObject.put("longitude", longitude);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        publishMessage("/tm/location", locationObject.toString());
+        publishMessage("/tm/position", locationObject.toString());
 
         // Write data to log file
         DataLogger.writeToLogFile(locationObject, this);
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         // Construct JSON object for data logging
         JSONObject noiseObject = new JSONObject();
         try {
-            noiseObject.put("dateTime", getTimestamp());
+            noiseObject.put("noiseTS", getTimestamp());
             noiseObject.put("noise", noise);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -210,8 +208,8 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
 
     }
 
-    private String getTimestamp(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        return sdf.format(new Date());
+    private long getTimestamp(){
+        Instant instant = Instant.now();
+        return (instant.getEpochSecond());
     }
 }
