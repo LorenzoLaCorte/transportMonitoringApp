@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
             e.printStackTrace();
         }
 
-        publishMessage("/tm/accelerometer", accelerometerObject.toString());
+        publishMessage(topics[0], accelerometerObject.toString());
 
         // Write data to log file
         DataLogger.writeToLogFile(accelerometerObject, this);
@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         JSONObject locationObject = new JSONObject();
 
         try {
-            //TODO: verificare nomi parametri
             locationObject.put("positionTS", getTimestamp());
             locationObject.put("latitude", latitude);
             locationObject.put("longitude", longitude);
@@ -181,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
             e.printStackTrace();
         }
 
-        publishMessage("/tm/position", locationObject.toString());
+        publishMessage(topics[2], locationObject.toString());
 
         // Write data to log file
         DataLogger.writeToLogFile(locationObject, this);
@@ -201,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        publishMessage("/tm/noise", noiseObject.toString());
+        publishMessage(topics[1], noiseObject.toString());
 
         // Write data to log file
         DataLogger.writeToLogFile(noiseObject, this);
