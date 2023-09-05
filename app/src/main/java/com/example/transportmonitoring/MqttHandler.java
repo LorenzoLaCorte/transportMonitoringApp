@@ -23,13 +23,9 @@ public class MqttHandler implements MqttCallback {
 
     public MqttHandler(String... topics){
         executorService = Executors.newSingleThreadExecutor();
-        this.connect();
-        for(String t: topics) {
-            Log.d(MQTT_TAG, "Subscribing to topic " + t);
-            subscribe(t);
-        }
+        this.connect(topics);
     }
-    public void connect() {
+    public void connect(String... topics) {
         executorService.submit(() -> {
             try {
                 // Set up the persistence layer
@@ -48,6 +44,10 @@ public class MqttHandler implements MqttCallback {
                 Log.d("MQTT", "Connected");
             } catch (MqttException e) {
                 e.printStackTrace();
+            }
+            for(String t: topics) {
+                Log.d(MQTT_TAG, "Subscribing to topic " + t);
+                subscribe(t);
             }
         });
     }
