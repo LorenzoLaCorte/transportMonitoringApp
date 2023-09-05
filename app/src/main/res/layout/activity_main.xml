@@ -8,7 +8,7 @@
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,26 +23,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Accelerometer X"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="15sp" />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Accelerometer Y"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Accelerometer Z"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="15sp" />
         </TableRow>
 
         <!-- Second Row (Values) -->
@@ -53,32 +53,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="35sp"
-                android:padding="7dp" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/yValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="35sp"
-                android:padding="7dp" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/zValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="35sp"
-                android:padding="7dp" />
+                android:textSize="35sp" />
         </TableRow>
     </TableLayout>
 
     <TableLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,25 +94,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="X coordinate"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Y coordinate"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="Noise (in dB)"
-                android:textSize="16sp"
-                android:padding="7dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <!-- Second Row (Values) -->
@@ -123,27 +123,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="40sp"
-                android:padding="7dp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/yCoordinateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="40sp"
-                android:padding="7dp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/noiseTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:padding="7dp"
                 android:text="0"
-                android:textSize="40sp"
-                android:padding="7dp" />
+                android:textSize="40sp" />
         </TableRow>
     </TableLayout>
 

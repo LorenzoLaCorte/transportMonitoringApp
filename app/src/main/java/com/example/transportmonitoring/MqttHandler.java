@@ -13,7 +13,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class MqttHandler implements MqttCallback {
     private static final String MQTT_TAG = "MQTT_HANDLER";
     private MqttAsyncClient client;
-    private static final String BROKER_URL = "tcp://192.168.178.188:1883"; // ipaddr to get the ip
+    private static final String BROKER_URL = "tcp://192.168.237.98:1883"; // ipaddr to get the ip
     private static final String CLIENT_ID = "mqtt_1";
 
     public MqttHandler(String... topics){

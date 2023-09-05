@@ -54,8 +54,10 @@ public class SensorHandler implements SensorEventListener {
     private final Runnable updateLocationRunnable = new Runnable() {
         @Override
         public void run() {
-            sensorListener.onLocationUpdate(location);
-            handler.postDelayed(this, 10000); // Adjust the interval as needed
+            if (location != null) {
+                sensorListener.onLocationUpdate(location);
+                handler.postDelayed(this, 10000); // Adjust the interval as needed
+            }
         }
     };
 

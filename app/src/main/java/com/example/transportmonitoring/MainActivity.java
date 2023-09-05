@@ -141,12 +141,12 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
     @Override
     @SuppressLint("DefaultLocale")
     public void onAccelerometerUpdate(float[] accelerometerValues) {
-        String xValue = String.format("%,2f", accelerometerValues[0]);
+        String xValue = String.format("%.2f", accelerometerValues[0]);
         String yValue = String.format("%.2f", accelerometerValues[1]);
         String zValue = String.format("%.2f", accelerometerValues[2]);
         xValueTextView.setText(xValue);
         yValueTextView.setText(yValue);
-        zValueTextView.setText(xValue);
+        zValueTextView.setText(zValue);
         JSONObject accelerometerObject = new JSONObject();
         try {
             accelerometerObject.put("accelerometerTS", getTimestamp());
