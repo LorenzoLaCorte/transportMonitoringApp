@@ -106,7 +106,7 @@ public class SensorHandler implements SensorEventListener {
         try {
             mediaRecorder.prepare();
             mediaRecorder.start();
-            sensorListener.onNoiseUpdate(getNoiseLevel());
+            handler.postDelayed(updateNoiseRunnable, 10000);
         } catch (IOException e) {
             e.printStackTrace();
         }

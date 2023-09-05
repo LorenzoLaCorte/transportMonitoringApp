@@ -10,13 +10,19 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MqttHandler implements MqttCallback {
+    private final ExecutorService executorService;
+
     private static final String MQTT_TAG = "MQTT_HANDLER";
     private MqttAsyncClient client;
     private static final String BROKER_URL = "tcp://192.168.237.98:1883"; // ipaddr to get the ip
     private static final String CLIENT_ID = "mqtt_1";
 
     public MqttHandler(String... topics){
+        executorService = Executors.newSingleThreadExecutor();
         this.connect();
         for(String t: topics) {
             Log.d(MQTT_TAG, "Subscribing to topic " + t);
@@ -24,24 +30,26 @@ public class MqttHandler implements MqttCallback {
         }
     }
     public void connect() {
-        try {
-            // Set up the persistence layer
-            MemoryPersistence persistence = new MemoryPersistence();
+        executorService.submit(() -> {
+            try {
+                // Set up the persistence layer
+                MemoryPersistence persistence = new MemoryPersistence();
 
-            // Initialize the MQTT client
-            client = new MqttAsyncClient(BROKER_URL, CLIENT_ID, persistence);
+                // Initialize the MQTT client
+                client = new MqttAsyncClient(BROKER_URL, CLIENT_ID, persistence);
 
-            // Set up the connection options
-            MqttConnectOptions connectOptions = new MqttConnectOptions();
-            connectOptions.setCleanSession(true);
-            client.setCallback(this);
+                // Set up the connection options
+                MqttConnectOptions connectOptions = new MqttConnectOptions();
+                connectOptions.setCleanSession(true);
+                client.setCallback(MqttHandler.this);
 
-            // Connect to the broker
-            client.connect(connectOptions).waitForCompletion(30000);
-            Log.d("MQTT", "Connected");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+                // Connect to the broker
+                client.connect(connectOptions).waitForCompletion(30000);
+                Log.d("MQTT", "Connected");
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        });
     }
     private void subscribeToTopic(String topic){
         this.subscribe(topic);
