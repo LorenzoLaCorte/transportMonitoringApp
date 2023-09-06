@@ -23,8 +23,8 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 690,
-        "y": 780,
+        "x": 290,
+        "y": 140,
         "wires": [
             [],
             []
@@ -43,8 +43,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 740,
-        "y": 980,
+        "x": 340,
+        "y": 340,
         "wires": [
             [
                 "89a899080555f837"
@@ -64,8 +64,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 750,
-        "y": 1040,
+        "x": 350,
+        "y": 400,
         "wires": [
             [
                 "89a899080555f837"
@@ -84,13 +84,13 @@
                 "vt": "date"
             }
         ],
-        "repeat": "3",
+        "repeat": "2",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 540,
-        "y": 880,
+        "x": 140,
+        "y": 240,
         "wires": [
             [
                 "8b46a0f7603159ab"
@@ -108,8 +108,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 760,
-        "y": 880,
+        "x": 360,
+        "y": 240,
         "wires": [
             [
                 "2e0350bd4d3212c7",
@@ -128,8 +128,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 750,
-        "y": 840,
+        "x": 350,
+        "y": 200,
         "wires": [
             [
                 "2e0350bd4d3212c7",
@@ -149,13 +149,13 @@
                 "vt": "date"
             }
         ],
-        "repeat": "3",
+        "repeat": "2",
         "crontab": "",
         "once": true,
         "onceDelay": "0.2",
         "topic": "",
-        "x": 540,
-        "y": 840,
+        "x": 140,
+        "y": 200,
         "wires": [
             [
                 "2f0aa85134ee2f74"
@@ -175,8 +175,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 770,
-        "y": 920,
+        "x": 370,
+        "y": 280,
         "wires": [
             [
                 "89a899080555f837"
@@ -194,8 +194,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1110,
-        "y": 920,
+        "x": 710,
+        "y": 280,
         "wires": [
             [
                 "2e0350bd4d3212c7",
@@ -210,8 +210,8 @@
         "name": "DataSender",
         "url": "http://212.78.1.205:8080",
         "thingname": "DataReceiver",
-        "x": 1490,
-        "y": 860,
+        "x": 1090,
+        "y": 220,
         "wires": []
     },
     {
@@ -227,8 +227,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1490,
-        "y": 920,
+        "x": 1090,
+        "y": 280,
         "wires": []
     },
     {
@@ -244,8 +244,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1100,
-        "y": 700,
+        "x": 700,
+        "y": 60,
         "wires": []
     },
     {
@@ -261,8 +261,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1110,
-        "y": 740,
+        "x": 710,
+        "y": 100,
         "wires": []
     },
     {
