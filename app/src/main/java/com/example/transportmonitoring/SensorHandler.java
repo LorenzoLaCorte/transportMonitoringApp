@@ -37,18 +37,20 @@ public class SensorHandler implements SensorEventListener {
     private float[] accelerometerValues;
     private Location location;
 
+    private final static int delay = 2000; //in milliseconds
+
     private final Runnable updateSensorDataRunnable = new Runnable() {
         @Override
         public void run() {
             sensorListener.onAccelerometerUpdate(accelerometerValues);
-            handler.postDelayed(this, 10000); // Adjust the interval as needed
+            handler.postDelayed(this, delay); // Adjust the interval as needed
         }
     };
     private final Runnable updateNoiseRunnable = new Runnable() {
         @Override
         public void run() {
             sensorListener.onNoiseUpdate(getNoiseLevel());
-            handler.postDelayed(this, 10000); // Adjust the interval as needed
+            handler.postDelayed(this, delay); // Adjust the interval as needed
         }
     };
     private final Runnable updateLocationRunnable = new Runnable() {
@@ -56,7 +58,7 @@ public class SensorHandler implements SensorEventListener {
         public void run() {
             if (location != null) {
                 sensorListener.onLocationUpdate(location);
-                handler.postDelayed(this, 10000); // Adjust the interval as needed
+                handler.postDelayed(this, delay); // Adjust the interval as needed
             }
         }
     };
@@ -106,11 +108,11 @@ public class SensorHandler implements SensorEventListener {
         try {
             mediaRecorder.prepare();
             mediaRecorder.start();
-            handler.postDelayed(updateNoiseRunnable, 10000);
+            handler.postDelayed(updateNoiseRunnable, delay);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        handler.postDelayed(updateNoiseRunnable, 10000); // Adjust the interval as needed
+        handler.postDelayed(updateNoiseRunnable, delay); // Adjust the interval as needed
 
     }
     private double getNoiseLevel() {
@@ -134,7 +136,7 @@ public class SensorHandler implements SensorEventListener {
     }
 
     public void startAccelerometerUpdates(){
-        handler.postDelayed(updateSensorDataRunnable, 10000); // Adjust the interval as needed
+        handler.postDelayed(updateSensorDataRunnable, delay); // Adjust the interval as needed
     }
     public void stopAccelerometerUpdates() {
         handler.removeCallbacks(updateSensorDataRunnable);
@@ -153,7 +155,7 @@ public class SensorHandler implements SensorEventListener {
     @SuppressLint("MissingPermission")
     public void startLocationUpdates(){
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        handler.postDelayed(updateLocationRunnable, 10000); // Adjust the interval as needed
+        handler.postDelayed(updateLocationRunnable, delay); // Adjust the interval as needed
     }
     public void stopLocationUpdates(){
         locationManager.removeUpdates(locationListener);
