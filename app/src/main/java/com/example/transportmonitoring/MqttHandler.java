@@ -15,7 +15,7 @@ public class MqttHandler implements MqttCallback {
     private MqttAsyncClient client;
     private final MqttDataGenerator dataGenerator;
 
-    private static final String BROKER_URL = "tcp://192.168.237.98:1883"; // ipaddr to get the ip
+    private static final String BROKER_URL = "tcp://192.168.124.98:1883"; // ipaddr to get the ip
     private static final String CLIENT_ID = "mqtt_1";
 
     public MqttHandler(MqttDataGenerator dataGenerator, String... topics){

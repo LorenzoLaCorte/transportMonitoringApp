@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
     public void onAccelerometerUpdate(float[] accelerometerValues) {
         String xValue = String.format("%.2f", accelerometerValues[0]);
         String yValue = String.format("%.2f", accelerometerValues[1]);
-        String zValue = String.format("%.2f", accelerometerValues[2]);
+        String zValue = String.format("%.2f", accelerometerValues[2] - 9.8);    // we are considering G-force
         xValueTextView.setText(xValue);
         yValueTextView.setText(yValue);
         zValueTextView.setText(zValue);
