@@ -188,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
     public void onNoiseUpdate(double noiseLevel) {
 
         String noise = String.format("%.2f", noiseLevel);
+        if (noise.equals("-Infinity")) {
+            noise = "0";
+        }
         noiseTextView.setText(noise);
         // Construct JSON object for data logging
         JSONObject noiseObject = new JSONObject();
