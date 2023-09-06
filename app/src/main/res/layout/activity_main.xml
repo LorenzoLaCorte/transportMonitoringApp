@@ -165,6 +165,7 @@
             android:layout_height="wrap_content"
             android:onClick="startRecording"
             android:text="@string/start_recording"
+            android:enabled="false"
             android:textSize="22.5sp" />
 
         <Button
@@ -173,6 +174,7 @@
             android:layout_height="wrap_content"
             android:onClick="stopRecording"
             android:text="@string/stop_recording"
+            android:enabled="false"
             android:textSize="24sp" />
     </LinearLayout>
 

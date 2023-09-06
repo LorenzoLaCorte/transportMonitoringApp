@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,9 +17,7 @@ import androidx.core.app.ActivityCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Instant;
-
-public class MainActivity extends AppCompatActivity implements SensorHandler.SensorListener {
+public class MainActivity extends AppCompatActivity implements SensorHandler.SensorListener, MqttHandler.MqttDataGenerator {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String TAG = "Main Activity";
 
@@ -51,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         yCoordinateTextView = findViewById(R.id.yCoordinateTextView);
         noiseTextView = findViewById(R.id.noiseTextView);
 
+        mqttHandler = new MqttHandler(this, topics);
         sensorHandler = new SensorHandler(this, this);
-        mqttHandler = new MqttHandler(topics);
 
         // Request necessary permissions
         ActivityCompat.requestPermissions(this,
@@ -149,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         zValueTextView.setText(zValue);
         JSONObject accelerometerObject = new JSONObject();
         try {
-            accelerometerObject.put("accelerometerTS", getTimestamp());
             accelerometerObject.put("accelerometerX", xValue);
             accelerometerObject.put("accelerometerY", yValue);
             accelerometerObject.put("accelerometerZ", zValue);
@@ -173,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         JSONObject locationObject = new JSONObject();
 
         try {
-            locationObject.put("positionTS", getTimestamp());
             locationObject.put("latitude", latitude);
             locationObject.put("longitude", longitude);
         } catch (JSONException e) {
@@ -195,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         // Construct JSON object for data logging
         JSONObject noiseObject = new JSONObject();
         try {
-            noiseObject.put("noiseTS", getTimestamp());
             noiseObject.put("noise", noise);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -207,8 +203,17 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
 
     }
 
-    private long getTimestamp(){
-        Instant instant = Instant.now();
-        return (instant.getEpochSecond());
+    @Override
+    public void connected() {
+        Toast.makeText(this, "I'm a toast!", Toast.LENGTH_LONG).show();
+        startButton.setEnabled(true);
+    }
+
+    @Override
+    public void disconnected() { // not called
+        stopUpdates();
+        startButton.setEnabled(false);
+        startButton.setEnabled(false);
+
     }
 }
