@@ -1,6 +1,6 @@
 [
     {
-        "id": "970b9cc21ae82d39",
+        "id": "e43ac8b5844dd4e8",
         "type": "tab",
         "label": "Flow 1",
         "disabled": false,
@@ -8,9 +8,9 @@
         "env": []
     },
     {
-        "id": "989a3b2663cc7627",
+        "id": "80f309a75742b3c9",
         "type": "aedes broker",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "",
         "mqtt_port": 1883,
         "mqtt_ws_bind": "port",
@@ -23,17 +23,17 @@
         "persistence_bind": "memory",
         "dburl": "",
         "usetls": false,
-        "x": 290,
-        "y": 140,
+        "x": 130,
+        "y": 120,
         "wires": [
             [],
             []
         ]
     },
     {
-        "id": "ad7b1ecd7dafdb37",
+        "id": "3e2e40b91d7bed38",
         "type": "mqtt in",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "",
         "topic": "/tm/noise",
         "qos": "2",
@@ -43,18 +43,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 340,
-        "y": 340,
+        "x": 320,
+        "y": 120,
         "wires": [
             [
-                "89a899080555f837"
+                "a1436225e5cf8945"
             ]
         ]
     },
     {
-        "id": "4150c9dd2aa6e8e4",
+        "id": "47454c0b0f189eb2",
         "type": "mqtt in",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "",
         "topic": "/tm/position",
         "qos": "2",
@@ -64,18 +64,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 350,
-        "y": 400,
+        "x": 330,
+        "y": 180,
         "wires": [
             [
-                "89a899080555f837"
+                "a1436225e5cf8945"
             ]
         ]
     },
     {
-        "id": "ff9577813fb8a20f",
+        "id": "fb8fef594a3ff3a7",
         "type": "inject",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "timestamp 2",
         "props": [
             {
@@ -89,58 +89,58 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 140,
-        "y": 240,
+        "x": 120,
+        "y": 280,
         "wires": [
             [
-                "8b46a0f7603159ab"
+                "011c75a3f73c3f69"
             ]
         ]
     },
     {
-        "id": "8b46a0f7603159ab",
+        "id": "011c75a3f73c3f69",
         "type": "function",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "/tm/temperature",
-        "func": "var tempHighestNumber = 37\nvar tempLowestNumber = 12\n\nvar temp = Math.floor(Math.random() * (tempHighestNumber - tempLowestNumber) + tempLowestNumber);\n\nmsg.payload = {\n    \"temperature\": temp,\n};\nmsg.topic = \"/tm/temperature\"\nreturn msg;",
+        "func": "var tempHighestNumber = 35\nvar tempLowestNumber = 10\n\nvar temp = Math.floor(Math.random() * (tempHighestNumber - tempLowestNumber) + tempLowestNumber);\n\nmsg.payload = {\n    \"busId\": 0,\n    \"temperature\": temp,\n};\nmsg.topic = \"/tm/temperature\"\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 360,
+        "x": 340,
+        "y": 280,
+        "wires": [
+            [
+                "7752f1c136752634",
+                "894e6366b72ef563"
+            ]
+        ]
+    },
+    {
+        "id": "55a07d88cfa008fb",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "/tm/crowding",
+        "func": "var minPeople = 0\nvar maxPeople = 50\n\nvar crowd = Math.floor(Math.random() * (maxPeople - minPeople) + minPeople);\nvar startingPeople = startingPeople + crowd;\n\nmsg.payload = {\n    \"busId\": 0,\n    \"crowding\": crowd\n};\n\nmsg.topic = \"/tm/crowding\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
         "y": 240,
         "wires": [
             [
-                "2e0350bd4d3212c7",
-                "7f48fc131ad9db9e"
+                "7752f1c136752634",
+                "894e6366b72ef563"
             ]
         ]
     },
     {
-        "id": "2f0aa85134ee2f74",
-        "type": "function",
-        "z": "970b9cc21ae82d39",
-        "name": "/tm/crowding",
-        "func": "var minPeople = 0\nvar maxPeople = 50\n\nvar crowd = Math.floor(Math.random() * (maxPeople - minPeople) + minPeople);\nvar startingPeople = startingPeople + crowd;\n\nmsg.payload = {\n    \"crowding\": crowd,\n};\n\nmsg.topic = \"/tm/crowding\"\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 350,
-        "y": 200,
-        "wires": [
-            [
-                "2e0350bd4d3212c7",
-                "cc4e9d1a76ced7cc"
-            ]
-        ]
-    },
-    {
-        "id": "d5728eef929aaab7",
+        "id": "aa94e8e3cc25f192",
         "type": "inject",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "timestamp 1",
         "props": [
             {
@@ -154,18 +154,18 @@
         "once": true,
         "onceDelay": "0.2",
         "topic": "",
-        "x": 140,
-        "y": 200,
+        "x": 120,
+        "y": 240,
         "wires": [
             [
-                "2f0aa85134ee2f74"
+                "55a07d88cfa008fb"
             ]
         ]
     },
     {
-        "id": "422df56fa79b3e18",
+        "id": "4ff99377f2359fbd",
         "type": "mqtt in",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "",
         "topic": "/tm/accelerometer",
         "qos": "2",
@@ -175,18 +175,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 370,
-        "y": 280,
+        "x": 350,
+        "y": 60,
         "wires": [
             [
-                "89a899080555f837"
+                "a1436225e5cf8945"
             ]
         ]
     },
     {
-        "id": "89a899080555f837",
+        "id": "a1436225e5cf8945",
         "type": "function",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "parser",
         "func": "function convertStringsToFloats(obj) {\n    for (const [key, value] of Object.entries(obj)) {\n        let floatValue = 0;\n        if(typeof value === 'string')\n            floatValue = parseFloat(value.replaceAll(\",\", \".\"));\n        else\n            floatValue = value;\n        obj[key] = floatValue;\n    }\n    return obj;\n}\n\nmsg.payload = convertStringsToFloats(msg.payload);\n\nreturn msg;",
         "outputs": 1,
@@ -194,30 +194,31 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 710,
-        "y": 280,
+        "x": 570,
+        "y": 100,
         "wires": [
             [
-                "2e0350bd4d3212c7",
-                "74f7ebb7e92c9d5c"
+                "7752f1c136752634",
+                "3a88f44da2f50b10",
+                "894e6366b72ef563"
             ]
         ]
     },
     {
-        "id": "2e0350bd4d3212c7",
+        "id": "7752f1c136752634",
         "type": "REST Thing",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "DataSender",
         "url": "http://212.78.1.205:8080",
-        "thingname": "DataReceiver",
-        "x": 1090,
-        "y": 220,
+        "thingname": "bus0",
+        "x": 830,
+        "y": 260,
         "wires": []
     },
     {
-        "id": "74f7ebb7e92c9d5c",
+        "id": "3a88f44da2f50b10",
         "type": "debug",
-        "z": "970b9cc21ae82d39",
+        "z": "e43ac8b5844dd4e8",
         "name": "parser debug",
         "active": true,
         "tosidebar": true,
@@ -227,43 +228,142 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1090,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "cc4e9d1a76ced7cc",
-        "type": "debug",
-        "z": "970b9cc21ae82d39",
-        "name": "crowding debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 700,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "7f48fc131ad9db9e",
-        "type": "debug",
-        "z": "970b9cc21ae82d39",
-        "name": "temperature debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 710,
+        "x": 770,
         "y": 100,
         "wires": []
+    },
+    {
+        "id": "44e95759129217f5",
+        "type": "telegram sender",
+        "z": "e43ac8b5844dd4e8",
+        "name": "",
+        "bot": "bbd8c6d6515a11ae",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1510,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1b2494413ffd1459",
+        "type": "telegram command",
+        "z": "e43ac8b5844dd4e8",
+        "name": "",
+        "command": "/start",
+        "description": "",
+        "registercommand": false,
+        "language": "",
+        "scope": "default",
+        "bot": "bbd8c6d6515a11ae",
+        "strict": false,
+        "hasresponse": true,
+        "useregex": false,
+        "removeregexcommand": false,
+        "outputs": 2,
+        "x": 750,
+        "y": 380,
+        "wires": [
+            [
+                "a2e152c54020814a"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "58ac9794e2a0e8c1",
+        "type": "influxdb out",
+        "z": "e43ac8b5844dd4e8",
+        "influxdb": "0f36a9b12888f36c",
+        "name": "",
+        "measurement": "chatId",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 1250,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a2e152c54020814a",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "function 1",
+        "func": "var res;\nres = {\n    \"chatId\": msg.payload.chatId\n}\nmsg.payload = res;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 380,
+        "wires": [
+            [
+                "58ac9794e2a0e8c1"
+            ]
+        ]
+    },
+    {
+        "id": "871de84e125208bd",
+        "type": "influxdb in",
+        "z": "e43ac8b5844dd4e8",
+        "influxdb": "0f36a9b12888f36c",
+        "name": "",
+        "query": "SELECT DISTINCT chatId as chatId from chatId",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "organisation",
+        "x": 1070,
+        "y": 320,
+        "wires": [
+            [
+                "70716be91ab20a5b"
+            ]
+        ]
+    },
+    {
+        "id": "70716be91ab20a5b",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "function 2",
+        "func": "var chatId = [];\nmsg.payload.forEach(element => {\n    chatId.push(element.chatId)\n});\nmsg.telegramMessage.chatId = chatId\nmsg.payload = msg.telegramMessage;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 320,
+        "wires": [
+            [
+                "44e95759129217f5"
+            ]
+        ]
+    },
+    {
+        "id": "894e6366b72ef563",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "alertChecker",
+        "func": "function checkAlerts(obj) {\n    var message = \"\"\n    for (const [key, value] of Object.entries(obj)) {\n       \n        if(key == \"temperature\" && (value >= 30 || value <= 15)){\n            message += \"Temperature is \" + value + \" degree\";\n        }\n        if (key == \"noise\" && value >= 70) {\n            message += \"Noise is \" + value + \" decibel\";\n        }\n        if (key == \"crowding\" && value >= 40) {\n            message += \"Bus is overcrowded: \" + value + \" people\";\n        }\n        if (key == \"accelerometerX\" && (value >= 25 || value <= -25)) { //turns\n            message += \"Acceleremoter X is \" + value + \" m/s\\n\";\n        }\n        if (key == \"accelerometerY\" && (value >= 25 || value <= -25)) { //holes\n            message += \"Acceleremoter Y is \" + value + \" m/s\\n\";\n        }\n        if (key == \"accelerometerZ\" && (value >= 30 || value <= -30)) { //accelerations or decelerations\n            message += \"Acceleremoter Z is \" + value + \" m/s\\n\";\n        }\n    }\n    if (message != \"\") {\n        return \"Bus: \" + obj.busId + \"\\n\" + message;\n    }\n    return \"\";\n}\n\nif (checkAlerts(msg.payload) != \"\"){\n    msg.telegramMessage = {\n        \"type\": \"message\",\n        \"chatId\": [],\n        \"content\": checkAlerts(msg.payload)\n    }\n    return msg;\n}\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 320,
+        "wires": [
+            [
+                "871de84e125208bd"
+            ]
+        ]
     },
     {
         "id": "64ce07a9bb65dd84",
@@ -291,5 +391,44 @@
         "willMsg": {},
         "userProps": "",
         "sessionExpiry": ""
+    },
+    {
+        "id": "bbd8c6d6515a11ae",
+        "type": "telegram bot",
+        "botname": "transportMonitoringTelegramBot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "0f36a9b12888f36c",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "transportMonitoringDB",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
     }
 ]

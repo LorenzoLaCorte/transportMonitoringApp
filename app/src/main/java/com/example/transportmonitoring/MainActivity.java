@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         zValueTextView.setText(zValue);
         JSONObject accelerometerObject = new JSONObject();
         try {
+            accelerometerObject.put("busId", 0);
             accelerometerObject.put("accelerometerX", xValue);
             accelerometerObject.put("accelerometerY", yValue);
             accelerometerObject.put("accelerometerZ", zValue);
@@ -171,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         JSONObject locationObject = new JSONObject();
 
         try {
+            locationObject.put("busId", 0);
             locationObject.put("latitude", latitude);
             locationObject.put("longitude", longitude);
         } catch (JSONException e) {
@@ -195,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
         // Construct JSON object for data logging
         JSONObject noiseObject = new JSONObject();
         try {
+            noiseObject.put("busId", 0);
             noiseObject.put("noise", noise);
         } catch (JSONException e) {
             e.printStackTrace();
