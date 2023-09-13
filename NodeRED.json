@@ -200,7 +200,8 @@
             [
                 "7752f1c136752634",
                 "3a88f44da2f50b10",
-                "894e6366b72ef563"
+                "894e6366b72ef563",
+                "801da2e1094f8060"
             ]
         ]
     },
@@ -240,7 +241,7 @@
         "bot": "bbd8c6d6515a11ae",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 1510,
+        "x": 1530,
         "y": 320,
         "wires": [
             []
@@ -262,7 +263,7 @@
         "useregex": false,
         "removeregexcommand": false,
         "outputs": 2,
-        "x": 750,
+        "x": 70,
         "y": 380,
         "wires": [
             [
@@ -285,7 +286,7 @@
         "retentionPolicyV18Flux": "",
         "org": "organisation",
         "bucket": "bucket",
-        "x": 1250,
+        "x": 570,
         "y": 380,
         "wires": []
     },
@@ -300,7 +301,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
+        "x": 260,
         "y": 380,
         "wires": [
             [
@@ -331,19 +332,17 @@
         "id": "70716be91ab20a5b",
         "type": "function",
         "z": "e43ac8b5844dd4e8",
-        "name": "function 2",
+        "name": "dynamic chatId",
         "func": "var chatId = [];\nmsg.payload.forEach(element => {\n    chatId.push(element.chatId)\n});\nmsg.telegramMessage.chatId = chatId\nmsg.payload = msg.telegramMessage;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1320,
+        "x": 1340,
         "y": 320,
         "wires": [
-            [
-                "44e95759129217f5"
-            ]
+            []
         ]
     },
     {
@@ -362,6 +361,186 @@
         "wires": [
             [
                 "871de84e125208bd"
+            ]
+        ]
+    },
+    {
+        "id": "95e02e1461daebd6",
+        "type": "worldmap",
+        "z": "e43ac8b5844dd4e8",
+        "name": "",
+        "lat": "",
+        "lon": "",
+        "zoom": "4",
+        "layer": "OSMG",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "showgrid": "false",
+        "showruler": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN,HM",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1360,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "801da2e1094f8060",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "position manager",
+        "func": "if(msg.topic == \"/tm/position\") {\n    var json = {\n        \"name\": msg.payload.busId.toString(),\n        \"lat\": msg.payload.latitude,\n        \"lon\": msg.payload.longitude,\n        \"color\": \"#7100ff\"\n    }\n    msg.payload = json;\n    return msg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 180,
+        "wires": [
+            [
+                "58e73efcf7457d58",
+                "04f01573688cc89e",
+                "0582526929c80c83"
+            ]
+        ]
+    },
+    {
+        "id": "58e73efcf7457d58",
+        "type": "debug",
+        "z": "e43ac8b5844dd4e8",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "cd2c7043f5b91455",
+        "type": "inject",
+        "z": "e43ac8b5844dd4e8",
+        "name": "timestamp 1",
+        "props": [
+            {
+                "p": "time",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.2",
+        "topic": "",
+        "x": 500,
+        "y": 660,
+        "wires": [
+            [
+                "05801f5e4608fa2b",
+                "f229704aa102f1a1"
+            ]
+        ]
+    },
+    {
+        "id": "ec41a5d03e01612f",
+        "type": "debug",
+        "z": "e43ac8b5844dd4e8",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "05801f5e4608fa2b",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "function 2",
+        "func": "var minlat = 44.0\nvar maxlat = 46.0\n\nvar minlon = 7.0\nvar maxlon = 9.0\n\nvar lat = Math.floor(Math.random() * (maxlat - minlat) + minlat);\nvar lon = Math.floor(Math.random() * (maxlon - minlon) + minlon);\n\n\n\nmsg.payload = { \"name\": \"poppe\", \"lat\": lat, \"lon\": lon }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f229704aa102f1a1",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "function 3",
+        "func": "var minlat = 43.0\nvar maxlat = 45.0\n\nvar minlon = 7.0\nvar maxlon = 9.0\n\nvar lat = Math.floor(Math.random() * (maxlat - minlat) + minlat);\nvar lon = Math.floor(Math.random() * (maxlon - minlon) + minlon);\n\n\n\nmsg.payload = { \"name\": \"poppe2\", \"lat\": lat, \"lon\": lon, \"color\": \"#fff000\" }\n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "04f01573688cc89e",
+        "type": "worldmap-tracks",
+        "z": "e43ac8b5844dd4e8",
+        "name": "",
+        "depth": 20,
+        "layer": "combined",
+        "smooth": false,
+        "x": 1190,
+        "y": 220,
+        "wires": [
+            [
+                "95e02e1461daebd6"
+            ]
+        ]
+    },
+    {
+        "id": "0582526929c80c83",
+        "type": "function",
+        "z": "e43ac8b5844dd4e8",
+        "name": "icon",
+        "func": "msg.payload.icon = \"bus\"\nmsg.payload.iconColor = \"#7100ff\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 140,
+        "wires": [
+            [
+                "95e02e1461daebd6"
             ]
         ]
     },
