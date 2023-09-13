@@ -1,6 +1,5 @@
 package com.example.transportmonitoring;
 
-import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.SENSOR_SERVICE;
 
 import android.annotation.SuppressLint;
@@ -10,13 +9,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +35,10 @@ public class SensorHandler implements SensorEventListener {
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
     private final SensorListener sensorListener;
-    private final LocationManager locationManager;
-    private final LocationListener locationListener;
     private MediaRecorder mediaRecorder;
     private float[] accelerometerValues;
     private Location location;
+    private final FusedLocationProviderClient fusedLocationClient;
 
     private final static int delay = 2000; //in milliseconds
 
@@ -63,6 +66,7 @@ public class SensorHandler implements SensorEventListener {
         }
     };
 
+
     public SensorHandler(SensorListener sensorListener, Activity activity){
         this.sensorListener = sensorListener;
         this.activity = activity;
@@ -70,19 +74,7 @@ public class SensorHandler implements SensorEventListener {
         // Initialize sensor and location managers
         sensorManager = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location l) {
-                location = l;
-            }
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-            @Override
-            public void onProviderEnabled(String provider) {}
-            @Override
-            public void onProviderDisabled(String provider) {}
-        };
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
         mediaRecorder = new MediaRecorder();
     }
 
@@ -152,15 +144,29 @@ public class SensorHandler implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    @SuppressLint("MissingPermission")
-    public void startLocationUpdates(){
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        handler.postDelayed(updateLocationRunnable, delay); // Adjust the interval as needed
-    }
-    public void stopLocationUpdates(){
-        locationManager.removeUpdates(locationListener);
-        handler.removeCallbacks(updateLocationRunnable);
+    private final LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            location = locationResult.getLastLocation();
+            Log.d("position", String.valueOf(location));
+        }
+    };
 
+
+    @SuppressLint("MissingPermission")
+    public void startLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(1000)  // Interval in milliseconds for location updates
+                .setFastestInterval(0);  // Fastest interval, set to 0 for immediate updates
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        handler.postDelayed(updateLocationRunnable, delay);
+    }
+
+    public void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+        handler.removeCallbacks(updateLocationRunnable);
     }
 
     public interface SensorListener {
