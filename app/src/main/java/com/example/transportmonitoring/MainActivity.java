@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements SensorHandler.Sen
 
     @Override
     public void connected() {
-        Toast.makeText(this, "I'm a toast!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Connected to Broker", Toast.LENGTH_LONG).show();
         startButton.setEnabled(true);
     }
 
